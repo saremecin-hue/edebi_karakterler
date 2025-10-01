@@ -1,92 +1,45 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Edebî Karakterlerin Diyaloğu</title>
-  <style>
-    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; padding:16px; max-width:900px; margin:auto; }
-    header { text-align:center; margin-bottom:16px; }
-    .card { border:1px solid #eee; padding:12px; border-radius:10px; margin-bottom:12px; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
-    label { display:block; margin:8px 0 4px; font-weight:600; }
-    select, button, textarea { width:100%; padding:10px; border-radius:8px; border:1px solid #ddd; }
-    button { margin-top:8px; cursor:pointer; }
-    #output { white-space:pre-wrap; margin-top:12px; background:#fafafa; padding:12px; border-radius:8px; }
-    footer { text-align:center; color:#666; font-size:13px; margin-top:18px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edebî Karakter Diyaloğu</title>
+<style>
+  body { display:flex; flex-direction:column; justify-content:center; align-items:center; height:100vh; font-family:sans-serif; background:#f9f9f9; margin:0; }
+  h1 { text-align:center; margin-bottom:20px; }
+  button { padding:20px 40px; font-size:1.5rem; border:none; border-radius:12px; background:#4CAF50; color:white; cursor:pointer; box-shadow:0 4px 6px rgba(0,0,0,0.2); transition:0.2s; }
+  button:hover { background:#45a049; }
+  #output { margin-top:30px; width:90%; max-width:700px; background:white; padding:20px; border-radius:12px; box-shadow:0 4px 6px rgba(0,0,0,0.1); white-space:pre-wrap; font-size:1.1rem; line-height:1.5; }
+</style>
 </head>
 <body>
-  <header>
-    <h1>Edebî Karakterlerin Diyaloğu</h1>
-    <p>Karakterleri seç, konu seç, yapay zekâ konuşmayı yazsın.</p>
-  </header>
 
-  <div class="card">
-    <label>Karakter 1</label>
-    <select id="char1"></select>
-
-    <label>Karakter 2</label>
-    <select id="char2"></select>
-
-    <label>Konu</label>
-    <select id="topic">
-      <option>Adalet</option>
-      <option>Aşk</option>
-      <option>Özgürlük</option>
-      <option>Yalnızlık</option>
-      <option>Vatan</option>
-    </select>
-
-    <button id="gen">Konuşmayı Üret</button>
-  </div>
-
-  <div class="card">
-    <h3>Oluşan Metin</h3>
-    <div id="output">Henüz üretilmedi.</div>
-  </div>
-
-  <footer>
-    <small>Proje için: karakter verisi URL'sini ayarlayın (JSON biçiminde) ve arka uç/LLM çağrısını entegre edin.</small>
-  </footer>
+<h1>Edebî Karakter Diyaloğu</h1>
+<button id="generateBtn">Metin Oluştur</button>
+<div id="output">Henüz metin üretilmedi.</div>
 
 <script>
-const DATA_URL = "https://raw.githubusercontent.com/saremecin-hue/edebi-karakterler/main/characters.json"; 
+  // Örnek önceden hazırlanmış AI metinleri
+  const aiTexts = [
+`İnce Memed: "Adalet, bizim toprağımızda kanla kazanılır. Ama umudumuzu kaybetmeyeceğiz."  
+Feride: "Her zaman doğruyu savunmak cesaret ister. İnsanlık için vazgeçmemeliyiz."`,
 
-async function loadChars(){
-  try{
-    const r = await fetch(DATA_URL);
-    const arr = await r.json();
-    const sel1 = document.getElementById('char1');
-    const sel2 = document.getElementById('char2');
-    arr.forEach(c=>{
-      const o1 = document.createElement('option'); o1.value = c.id; o1.textContent = c.name; sel1.appendChild(o1);
-      const o2 = document.createElement('option'); o2.value = c.id; o2.textContent = c.name; sel2.appendChild(o2);
-    });
-    if(arr.length>1) sel2.selectedIndex = 1;
-  }catch(e){
-    document.getElementById('output').textContent = "Karakter verisi yüklenemedi. DATA_URL'yi ayarlayın.";
-  }
-}
+`Küçük Prens: "İnsanlar gözle göremediklerini unutur."  
+Meursault: "Bazen hiçbir şey umurumda değil, ama anlam aramak kaçınılmaz."`,
 
-async function fetchCharacterById(id){
-  const r = await fetch(DATA_URL);
-  const arr = await r.json();
-  return arr.find(x=>x.id===id);
-}
+`Aylak Adam: "Şehirde yalnızsın ama herkes bir hikaye taşıyor."  
+Feride: "O hikayeleri dinlemek, belki de insanı insan yapan şeydir."`
+  ];
 
-document.getElementById('gen').addEventListener('click', async ()=>{
-  const c1id = document.getElementById('char1').value;
-  const c2id = document.getElementById('char2').value;
-  const topic = document.getElementById('topic').value;
-  if(!c1id || !c2id) { alert("Lütfen iki karakter seçin."); return; }
-  const c1 = await fetchCharacterById(c1id);
-  const c2 = await fetchCharacterById(c2id);
+  const btn = document.getElementById("generateBtn");
+  const output = document.getElementById("output");
 
-  const prompt = `Aşağıdaki karakterleri kullanarak "${topic}" hakkında 800-1500 kelimelik bir diyalog yaz. Karakterler:\n\n1) ${c1.name}: ${c1.desc}\n2) ${c2.name}: ${c2.desc}\n\nDili edebi yap, karakterlerin dönemi ve özelliklerini koru.`;
-  document.getElementById('output').textContent = "Prompt:\n" + prompt + "\n\n(Bu şablon LLM entegrasyonuna hazır.)";
-});
-
-loadChars();
+  btn.addEventListener("click", () => {
+    const randomIndex = Math.floor(Math.random() * aiTexts.length);
+    output.textContent = aiTexts[randomIndex];
+  });
 </script>
+
 </body>
 </html>
+
