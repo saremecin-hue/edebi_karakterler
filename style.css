@@ -1,0 +1,61 @@
+/* Genel sayfa ayarları */
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: 'Arial', sans-serif;
+  background: #f9f9f9;
+  margin: 0;
+  padding: 0;
+}
+
+/* Başlık */
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2rem;
+  color: #333;
+}
+
+/* Buton stili */
+button {
+  padding: 20px 40px;
+  font-size: 1.5rem;
+  border: none;
+  border-radius: 12px;
+  background: #4CAF50;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  transition: background 0.2s;
+}
+
+button:hover {
+  background: #45a049;
+}
+
+/* Metin çıktısı kutusu */
+#output {
+  margin-top: 30px;
+  width: 90%;
+  max-width: 700px;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  white-space: pre-wrap;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  color: #333;
+}
+
+/* Seçim kutusu (dropdown) */
+select {
+  margin-top: 10px;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+}
