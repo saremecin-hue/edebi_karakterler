@@ -1,4 +1,4 @@
-// Karakter açıklamaları (JSON dosyasından yüklemek istersin ileride)
+// Karakterler ve açıklamaları
 const characters = [
   { id:"ince_memed", name:"İnce Memed", desc:"Asi, adalet arayışında, köylüleri ağalara karşı savunur. 1930'lar Anadolu’su." },
   { id:"feride", name:"Feride (Çalıkuşu)", desc:"İdealist öğretmen; fedakâr, modernleşmeyi ve topluma hizmeti önemser." },
@@ -14,18 +14,17 @@ document.getElementById("generateBtn").addEventListener("click", async () => {
     return;
   }
 
-  // Prompt oluştur
   const prompt = `Aşağıdaki karakterleri kullanarak "${topic}" konulu en az 2000 kelimelik, tamamen özgün bir diyalog yaz. Karakterlerin açıklamaları ve özellikleri şöyledir:\n\n` +
     characters.map(c => `${c.name}: ${c.desc}`).join("\n") +
     `\n\nDiyalog, karakterlerin dönemlerine uygun olmalı, kitaplardan alıntı içermemeli.`;
 
-  // API çağrısı örneği: (OpenAI API gibi)
   try {
-    const response = await fetch(edebi-karakterler-ps6r7oyyf-saremecins-projects.vercel.app/api/generate", {
+    const response = await fetch("https://edebi-karakterler-ps6r7oyyf-saremecins-projects.vercel.app/api/generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ prompt })
     });
+
     const data = await response.json();
     const text = data.text || "Hata: metin alınamadı.";
     document.getElementById("output").textContent = text;
