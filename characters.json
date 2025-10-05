@@ -1,27 +1,17 @@
 [
   {
-    "id": "ince_memed",
-    "name": "İnce Memed",
-    "desc": "Asi, adalet arayışında, köylüleri ağalara karşı savunur. 1930'lar Anadolu'su."
+    "name": "Mehmet",
+    "era": "19. yüzyıl",
+    "traits": "cesur, meraklı"
   },
   {
-    "id": "feride",
-    "name": "Feride (Çalıkuşu)",
-    "desc": "İdealist öğretmen; fedakâr, modernleşmeyi ve topluma hizmeti önemser. Cumhuriyet’in ilk yıllarını temsil eder."
+    "name": "Elif",
+    "era": "21. yüzyıl",
+    "traits": "zeki, sabırlı"
   },
   {
-    "id": "aylak_adam",
-    "name": "Aylak Adam (C.)",
-    "desc": "Yalnız, şehirli, modern bireyin yabancılaşmasını yansıtır; 1950’ler İstanbul'unu temsil eder."
-  },
-  {
-    "id": "küçük_prens",
-    "name": "Küçük Prens",
-    "desc": "Saf, sorgulayıcı, hayata çocuk gözüyle bakan; evrensel değerleri (sevgi, dostluk, anlam arayışı) ön plana çıkarır."
-  },
-  {
-    "id": "meursault",
-    "name": "Meursault (Yabancı)",
-    "desc": "Kaygısız, toplumsal normlara uymayan; varoluşçu edebiyatın simgesi. 1940’lar Cezayir/Fransa."
+    "name": "Ahmet",
+    "era": "20. yüzyıl",
+    "traits": "nazik, neşeli"
   }
 ]
