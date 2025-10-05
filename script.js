@@ -19,7 +19,7 @@ document.getElementById("generateBtn").addEventListener("click", async () => {
     `\n\nDiyalog, karakterlerin dönemlerine uygun olmalı, kitaplardan alıntı içermemeli.`;
 
   try {
-    const response = await fetch("https://edebi-karakterler-ps6r7oyyf-saremecins-projects.vercel.app/api/generate", {
+    const response = await fetch("https://edebi-karakterler-mzt5e6lpx-saremecins-projects.vercel.app/api/generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ prompt:  "Karakterler arasında 2000 kelimelik diyalog oluştur" })
