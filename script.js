@@ -21,7 +21,7 @@ document.getElementById("generateBtn").addEventListener("click", async () => {
 
   // API çağrısı örneği: (OpenAI API gibi)
   try {
-    const response = await fetch("YOUR_BACKEND_ENDPOINT", {
+    const response = await fetch(edebi-karakterler-ps6r7oyyf-saremecins-projects.vercel.app/api/generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ prompt })
