@@ -5,7 +5,35 @@ const openai = new OpenAI({
 });
 
 export default async function handler(req, res) {
+  try {import OpenAI from "openai";
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
+
+export default async function handler(req, res) {
   try {
+    const { prompt } = await req.json();
+
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        {
+          role: "system",
+          content: "Sen edebi bir anlatım tarzına sahip, uzun ve derin diyaloglar yazan bir yapay zekasın."
+        },
+        { role: "user", content: prompt }
+      ],
+      max_tokens: 4000
+    });
+
+    res.status(200).json({ text: completion.choices[0].message.content });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error.message });
+  }
+}
+
     // Frontend'den gelen prompt'u al
     const { prompt } = await req.json();
 
