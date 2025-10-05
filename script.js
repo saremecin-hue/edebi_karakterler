@@ -22,7 +22,7 @@ document.getElementById("generateBtn").addEventListener("click", async () => {
     const response = await fetch("https://edebi-karakterler-ps6r7oyyf-saremecins-projects.vercel.app/api/generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ prompt })
+      body: JSON.stringify({ prompt:  "Karakterler arasında 2000 kelimelik diyalog oluştur" })
     });
 
     const data = await response.json();
