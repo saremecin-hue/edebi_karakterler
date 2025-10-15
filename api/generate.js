@@ -145,3 +145,16 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: error?.message || "Sunucu hatası, metin oluşturulamadı." });
   }
 }
+// 402 handling + optional fallback pseudocode
+const { resp, rawText } = await callOpenRouterRaw(body);
+if (!resp.ok) {
+  if (resp.status === 402) {
+    console.error("OpenRouter: insufficient credits:", rawText);
+    // kullanıcıya net mesaj dön
+    return res.status(402).json({
+      error: "Sunucu hatası: hesabınızda yeterli kredi yok.",
+      action: "OpenRouter hesabınıza kredi yükleyin: https://openrouter.ai/settings/credits"
+    });
+  }
+  // diğer hata durumları...
+}
