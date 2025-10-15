@@ -3,49 +3,56 @@ document.addEventListener("DOMContentLoaded", () => {
   const output = document.getElementById("output");
   const topicSelect = document.getElementById("topicSelect");
 
+  if (!button || !output || !topicSelect) {
+    console.error("Gerekli DOM elemanları bulunamadı.");
+    return;
+  }
+
   button.addEventListener("click", async () => {
-    const tema = topicSelect?.value || "";
+    const tema = topicSelect.value || "";
     if (!tema) {
       output.textContent = "Lütfen bir konu/tema seçin.";
       return;
     }
 
     button.disabled = true;
+    const originalText = button.textContent;
     button.textContent = "Oluşturuluyor...";
+
     output.textContent = "Metin oluşturuluyor... Lütfen bekleyin.";
 
     try {
-      const response = await fetch("/api/generate", {
+      const res = await fetch("/api/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          // backend'de beklenen alan adıyla eşleştirin (prompt veya tema)
-          prompt: `Tema: ${tema}\nKarakterler arasında 2000 kelimelik özgün bir diyalog oluştur.`
-        })
+        body: JSON.stringify({ tema })
       });
 
-      const contentType = response.headers.get("content-type") || "";
+      const contentType = res.headers.get("content-type") || "";
       let data;
       if (contentType.includes("application/json")) {
-        data = await response.json();
+        data = await res.json();
       } else {
-        // Bazı hata durumları metin dönebilir; onu da yakala
-        data = { error: await response.text() };
+        data = { error: await res.text() };
       }
 
-      if (!response.ok) {
-        console.error("Sunucu yanıtı (hatali):", response.status, data);
-        output.textContent = data.error || `Sunucu hatası: ${response.status}`;
+      if (!res.ok) {
+        console.error("Sunucu hatalı cevap:", res.status, data);
+        // Eğer backend details gönderiyorsa onu da göster (debug için). Prod'da daha gizli gösterin.
+        output.textContent = data?.error ? `Hata: ${data.error}` : `Sunucu hatası: ${res.status}`;
+        if (data?.details) {
+          output.textContent += `\nDetay: ${String(data.details).slice(0,1000)}`;
+        }
       } else {
         output.textContent = data.text || "Hata: Metin alınamadı.";
       }
 
-    } catch (error) {
-      console.error("🔴 Ağ veya JS Hatası:", error);
+    } catch (err) {
+      console.error("Ağ/JS hatası:", err);
       output.textContent = "Ağ hatası veya sunucuya ulaşılamıyor.";
     } finally {
       button.disabled = false;
-      button.textContent = "Metin Oluştur";
+      button.textContent = originalText;
     }
   });
 });
